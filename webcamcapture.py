@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 
 #HYPERPARAMETERS
-DEBUG = True
+DEBUG = False
 BLUE_SENS = 30 
 RED_SENS = 30
 GREEN_SENS = 5  

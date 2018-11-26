@@ -10,12 +10,14 @@ ALPHA = 0.1
 # global  variables
 ALL_POSSIBLE_ACTIONS = ('U', 'D', 'L', 'R')
 DEBUG = True
-MANUAL = False
-GRID_Y = 6
-GRID_X = 6
+MANUAL = True
+GRID_Y = 4
+GRID_X = 4
 PREV_POLICY = {}
 PREV_STATE = ()
-NUM_EPISODES = 5000
+PREV_Q = {}
+NUM_EPISODES = 80000
+
 
 def max_dict(d):
   # returns the argmax (key) and max (value) from a dictionary
@@ -49,7 +51,11 @@ def run(first):
 
 
 def q_learn(grid, first):
-  
+  global PREV_Q
+  #TIMER START
+  t0 = time.time()
+
+  #Imports start state
   start_state = grid.current_state()
 
   # no policy initialization, we will derive our policy from most recent Q
@@ -63,7 +69,8 @@ def q_learn(grid, first):
       for a in ALL_POSSIBLE_ACTIONS:
         Q[s][a] = 0
   else:
-    Q = prev_Q
+    Q = PREV_Q
+    states = grid.all_states() 
 
   # let's also keep track of how many times Q[s] has been updated
   update_counts = {}
@@ -76,8 +83,11 @@ def q_learn(grid, first):
   # repeat until convergence
   t = 1.0
   deltas = []
-  
-  for it in range(NUM_EPISODES):
+  sum_reward = []
+
+  episode_func = int(23.74 * GRID_X*GRID_Y + 2445.02)
+
+  for it in range(episode_func):
     if it % 100 == 0:
       t += 1e-2
     if it % 2000 == 0:
@@ -96,15 +106,20 @@ def q_learn(grid, first):
     # care about updating it.
     a, _ = max_dict(Q[s])
     biggest_change = 0
+    sum_episode_rewards = []
+
     while not grid.game_over():
-      a = random_action(a, eps=0.5/t) # epsilon-greedy
+      #a = random_action(a, eps=0.5/t) # epsilon-greedy with decaying epsilon
+      a = random_action(a, eps=0.5) # epsilon-greedy
       # random action also works, but slower since you can bump into walls
       # a = np.random.choice(ALL_POSSIBLE_ACTIONS)
       r = grid.move(a)
+      sum_episode_rewards.append(r)
       s2 = grid.current_state()
 
       # adaptive learning rate
-      alpha = ALPHA / update_counts_sa[s][a]
+      # alpha = ALPHA / update_counts_sa[s][a]
+      alpha = ALPHA
       update_counts_sa[s][a] += 0.005
 
       # we will update Q(s,a) AS we experience the episode
@@ -124,7 +139,7 @@ def q_learn(grid, first):
       a = a2
      
     deltas.append(biggest_change)
-
+    sum_reward.append(sum(sum_episode_rewards))
   # determine the policy from Q*
   # find V* from Q*
   policy = {}
@@ -133,63 +148,91 @@ def q_learn(grid, first):
     a, max_q = max_dict(Q[s])
     policy[s] = a
     V[s] = max_q
+
   global PREV_POLICY
   PREV_POLICY = policy
 
+  #TIMER STOP
+  t1 = time.time()
+  print("Time elapsed: {}".format(t1-t0))
+
   if DEBUG:
+    lowest_delta = min(deltas)
+    print(lowest_delta)
+    print(deltas.index(lowest_delta))
     plt.plot(deltas)
     plt.show()
 
-    # print start state
-    print("start state: ")
-    print(s)
+    plt.plot(sum_reward)
+    plt.show()
 
     # print rewards
-    print("rewards:")
-    print_values(grid.rewards, grid)
+    # print("rewards:")
+    # print_values(grid.rewards, grid)
 
     # what's the proportion of time we spend updating each part of Q?
-    print("update counts:")
-    total = np.sum(list(update_counts.values()))
-    for k, v in update_counts.items():
-      update_counts[k] = float(v) / total
-    print_values(update_counts, grid)
+    # print("update counts:")
+    # total = np.sum(list(update_counts.values()))
+    # for k, v in update_counts.items():
+    #   update_counts[k] = float(v) / total
+    # print_values(update_counts, grid)
 
+    # Prints environment with rewards
     rew = np.zeros((GRID_Y, GRID_X))
     for i in range (GRID_X):
       for j in range(GRID_Y):
         rew[i,j] = grid.rewards.get((i,j), 0)
-    val = np.zeros((GRID_Y, GRID_X))
-    for i in range (GRID_X):
-      for j in range(GRID_Y):
-        val[i,j] = V.get((i,j), 0)
-    
-    plt.imshow(val)
-    plt.colorbar()
-    plt.show()
     plt.imshow(rew)
     plt.colorbar()
     plt.show()
-    print("values:")
-    print_values(V, grid)
-    print("policy:")
-    print_policy(policy, grid)
 
-    prev_Q = Q
+    # val = np.zeros((GRID_Y, GRID_X))
+    # for i in range (GRID_X):
+    #   for j in range(GRID_Y):
+    #     val[i,j] = V.get((i,j), 0)
+    # plt.imshow(val)
+    # plt.colorbar()
+    # plt.show()
+
+    #Plots policy from start state
+    route = rew
+    pos_x, pos_y = start_state[0],start_state[1]
+    while route[pos_y,pos_x] != 1:
+      route[pos_y,pos_x] = 5
+      if policy.get((pos_y,pos_x)) == 'U': 
+        pos_y -= 1
+      elif policy.get((pos_y,pos_x)) == 'D': 
+        pos_y += 1
+      elif policy.get((pos_y,pos_x)) == 'L': 
+        pos_x -= 1
+      elif policy.get((pos_y,pos_x)) == 'R': 
+        pos_x += 1
+
+    plt.imshow(route)
+    plt.colorbar()
+    plt.show()
+    
+    
+   
+    
+
+    # print("values:")
+    # print_values(V, grid)
+    # print("policy:")
+    # print_policy(policy, grid)
+
+  PREV_Q = Q
 
   return policy, start_state
 
 if __name__ == "__main__":
+  i = 0
   while True:
-    i = 0
     if i>0: first = False
     else: first = True
     input("Trykk enter")
-    t0 = time.time()
     policy, s = run(first)
     action = policy.get(s)
     print("recommended action:")
     print(action)
-    t1 = time.time()
-    print("time elapsed:")
-    print(t1-t0)
+    i += 1
