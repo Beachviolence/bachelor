@@ -11,12 +11,12 @@ ALPHA = 0.1
 ALL_POSSIBLE_ACTIONS = ('U', 'D', 'L', 'R')
 DEBUG = True
 MANUAL = True
-GRID_Y = 4
-GRID_X = 4
+GRID_Y = 33
+GRID_X = 33
 PREV_POLICY = {}
 PREV_STATE = ()
 PREV_Q = {}
-NUM_EPISODES = 80000
+NUM_EPISODES = 0
 
 
 def max_dict(d):
