@@ -16,7 +16,7 @@ GRID_X = 33
 PREV_POLICY = {}
 PREV_STATE = ()
 PREV_Q = {}
-NUM_EPISODES = 0
+NUM_EPISODES = 18.66 * GRID_X*GRID_Y + 5932.01
 
 
 def max_dict(d):
@@ -39,18 +39,18 @@ def random_action(a, eps=0.1):
   else:
     return np.random.choice(ALL_POSSIBLE_ACTIONS)
 
-def run(first):
+def run(epoch):
   if MANUAL:
     grid, learn = manual_grid(GRID_Y, GRID_X)
   else:
     grid, learn = standard_grid()
   if learn:
-    return q_learn(grid, first)
+    return q_learn(grid, epoch)
   else:
     return PREV_POLICY, grid.current_state()
 
 
-def q_learn(grid, first):
+def q_learn(grid, epoch):
   global PREV_Q
   #TIMER START
   t0 = time.time()
@@ -61,7 +61,7 @@ def q_learn(grid, first):
   # no policy initialization, we will derive our policy from most recent Q
 
   # initialize Q(s,a) if first run
-  if first:
+  if epoch == 0:
     Q = {}
     states = grid.all_states()
     for s in states:
@@ -85,9 +85,10 @@ def q_learn(grid, first):
   deltas = []
   sum_reward = []
 
-  episode_func = int(23.74 * GRID_X*GRID_Y + 2445.02)
+  if epoch == 0: num_episodes = 80000
+  else: num_episodes = NUM_EPISODES/(100)
 
-  for it in range(episode_func):
+  for it in range(int(num_episodes)):
     if it % 100 == 0:
       t += 1e-2
     if it % 2000 == 0:
@@ -197,7 +198,7 @@ def q_learn(grid, first):
     #Plots policy from start state
     route = rew
     pos_x, pos_y = start_state[0],start_state[1]
-    while route[pos_y,pos_x] != 1:
+    while route[pos_y,pos_x] != 5:
       route[pos_y,pos_x] = 5
       if policy.get((pos_y,pos_x)) == 'U': 
         pos_y -= 1
@@ -212,10 +213,8 @@ def q_learn(grid, first):
     plt.colorbar()
     plt.show()
     
-    
-   
-    
 
+    # Printfunksjoner
     # print("values:")
     # print_values(V, grid)
     # print("policy:")
@@ -226,13 +225,11 @@ def q_learn(grid, first):
   return policy, start_state
 
 if __name__ == "__main__":
-  i = 0
+  epoch = 0
   while True:
-    if i>0: first = False
-    else: first = True
     input("Trykk enter")
-    policy, s = run(first)
+    policy, s = run(epoch)
     action = policy.get(s)
     print("recommended action:")
     print(action)
-    i += 1
+    epoch += 1
