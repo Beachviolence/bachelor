@@ -36,7 +36,4 @@ def debug_grid(y, x):
     g.set(rewards, actions)
     return g
 
-    print(actions)
-    print(rewards)
-
 debug_grid(3,3)

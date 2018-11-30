@@ -1,3 +1,10 @@
+#### INFORMASJON #### 
+# Forfatter: Simon Strandvold og Hans Petter Leines
+
+# Beskrivelse:
+# Denne koden inneholder egendefinerte labyrinter
+# til bruk i testing. Disse hentes opp i grid_world.py
+
 def mazes(num):
     labyrint0 = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
