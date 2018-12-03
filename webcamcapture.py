@@ -1,6 +1,7 @@
 #### INFORMASJON #### 
 # Filnavn: webcamcapture.py
 # Forfatter: Simon Strandvold og Hans Petter Leines
+# Git: https://github.com/beachviolence/bachelor.git
 
 # Beskrivelse:
 # Denne koden tar bilde, tolker og returnerer det

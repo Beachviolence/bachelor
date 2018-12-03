@@ -1,6 +1,7 @@
 #### INFORMASJON #### 
 # Filnavn: labyrinter.py
 # Forfatter: Simon Strandvold og Hans Petter Leines
+# Git: https://github.com/beachviolence/bachelor.git
 
 # Beskrivelse:
 # Denne koden inneholder egendefinerte labyrinter

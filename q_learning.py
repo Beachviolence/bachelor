@@ -1,6 +1,8 @@
 #### INFORMASJON #### 
 # Filnavn: q_learning.py
 # Forfatter: Simon Strandvold og Hans Petter Leines
+# Git: https://github.com/beachviolence/bachelor.git
+
 # Inspirert av kursmateriell fra LazyProgrammer Inc. med tillatelse
 
 # Beskrivelse:
