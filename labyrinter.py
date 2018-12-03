@@ -2,6 +2,8 @@
 # Filnavn: labyrinter.py
 # Forfatter: Simon Strandvold og Hans Petter Leines
 
+# Git: https://github.com/beachviolence/bachelor.git
+
 # Beskrivelse:
 # Denne koden inneholder egendefinerte labyrinter
 # til bruk i testing. Disse hentes opp i grid_world.py

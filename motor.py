@@ -1,6 +1,7 @@
 #### INFORMASJON #### 
 # Filnavn: motor.py
 # Forfatter: Simon Strandvold og Hans Petter Leines
+# Git: https://github.com/beachviolence/bachelor.git
 
 # Beskrivelse:
 # Denne koden henter beste avgjørelse fra det fysiske
