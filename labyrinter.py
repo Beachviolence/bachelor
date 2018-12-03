@@ -1,4 +1,5 @@
 #### INFORMASJON #### 
+# Filnavn: labyrinter.py
 # Forfatter: Simon Strandvold og Hans Petter Leines
 
 # Beskrivelse:

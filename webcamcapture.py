@@ -1,4 +1,5 @@
 #### INFORMASJON #### 
+# Filnavn: webcamcapture.py
 # Forfatter: Simon Strandvold og Hans Petter Leines
 
 # Beskrivelse:
@@ -39,7 +40,7 @@ def take_photo():
     else:
         print("ERROR, COULD NOT TAKE PICTURE")
 
-# Cropper bilde
+# Beskjærer bilde
 def crop(img, pos_x=0, pos_y=0):
     size = img.shape
     size = [int(size[0]/100)*100, int(size[1]/100)*100]

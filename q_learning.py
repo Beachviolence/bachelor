@@ -1,9 +1,11 @@
 #### INFORMASJON #### 
+# Filnavn: q_learning.py
 # Forfatter: Simon Strandvold og Hans Petter Leines
+# Inspirert av kursmateriell fra LazyProgrammer Inc. med tillatelse
 
 # Beskrivelse:
 # Denne koden henter miljøet, trener på det og
-# returnerer anbefalt handling og evnt. strategien
+# returnerer anbefalt handling og evt. strategien
 
 #### INKLUDERTE BIBLIOTEK ####
 
@@ -244,7 +246,7 @@ def q_learn(grid, epoch):
 
     # Vilsualiserer strategien fra start til mål
     route = rew
-    pos_x, pos_y = start_state[0],start_state[1]
+    pos_x, pos_y = start_state[1],start_state[0]
     while route[pos_y,pos_x] != 5:
       route[pos_y,pos_x] = 5
       if policy.get((pos_y,pos_x)) == 'U': 
@@ -268,7 +270,7 @@ def q_learn(grid, epoch):
     # print("policy:")
     # print_policy(policy, grid)
 
-  # Lagerer Q
+  # Lagrer Q
   PREV_Q = Q
 
   # Returnerer strategien og start-tilstand

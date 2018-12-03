@@ -1,5 +1,7 @@
 #### INFORMASJON #### 
+# Filnavn: grid_world.py
 # Forfatter: Simon Strandvold og Hans Petter Leines
+# Inspirert av kursmateriell fra LazyProgrammer Inc. med tillatelse
 
 # Beskrivelse:
 # Denne koden generer miljøet som er lesbart
@@ -22,8 +24,8 @@ STEP_COST = -1
 START_STATE = (0,0)
 
 # Størrelse på manuelt miljø og antall hinder ønsket
-GRID_HEIGHT = 33
-GRID_WIDTH = 33
+GRID_HEIGHT = 30
+GRID_WIDTH = 30
 NUM_OBSTACLES = GRID_HEIGHT
 
 # Initsialiserer tilfeldig eller manuelt miljø
@@ -31,7 +33,7 @@ RANDOM_REWARDS = False
 MAZE = mazes(1)
 
 # Miljø fra kamera eller egendefinert
-CAMERA = False
+CAMERA = True
 
 ## GLOBALE VARIABLER ##
 PREV_REWARDS = {}
@@ -78,15 +80,12 @@ class Grid:
         # True om beslutningstakeren er i mål
         return self.rewards[self.i, self.j] == GOAL_REWARD
 
-    # 
+    # Retunerer en dict med alle tilstander
     def all_states(self):
-        # possibly buggy but simple way to get all states
-        # either a position that has possible next actions
-        # or a position that yields a reward
         return set(self.actions.keys()) | set(self.rewards.keys())
 
 
-## MILJØ MED KAMPERA SOM SENSOR ##
+## MILJØ MED KAMERA SOM SENSOR ##
 
 def camera_grid():
     global PREV_REWARDS
@@ -104,7 +103,13 @@ def camera_grid():
     return g, train
 
 # Henter ut gevinster fra sensor
-def get_rewards(grid, goal_reward = GOAL_REWARD, red_reward = RED_REWARD, blue_reward = BLUE_REWARD, step_cost = STEP_COST):
+def get_rewards(grid, 
+                goal_reward = GOAL_REWARD, 
+                red_reward = RED_REWARD, 
+                blue_reward = BLUE_REWARD, 
+                step_cost = STEP_COST
+                ):
+
     rewards = {}
     for i in range(grid.shape[0]):
         for j in range(grid.shape[1]):
@@ -206,18 +211,18 @@ def grid_world():
 #### PRINT FUNKSJONER ####
 def print_values(V, g):
     for i in range(g.height):
-        print("-----------------------------------------------------------")
+        print("-------------------")
         for j in range(g.width):
             v = V.get((i,j), 0)
             if v >= 0:
                 print("  %.2f  | " % v, end="")
             else:
-                print(" %.2f  |" % v, end=" ") # '-' takes up an extra space
+                print(" %.2f  |" % v, end=" ") 
         print("")
 
 def print_policy(P, g):
     for i in range(g.height):
-        print("-----------------------------------")
+        print("-------------------")
         for j in range(g.width):
             a = P.get((i, j), ' ')
             print("  %s  |" % a, end="")
